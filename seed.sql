@@ -5,7 +5,14 @@ CREATE DATABASE companyDB;
 USE companyDB;
 
 CREATE TABLE department(
-id INT NOT NULL AUTO_INCREMENT,
-name VARCHAR(100) NULL,
-PRIMARY KEY (id)
+    id INT NOT NULL AUTO_INCREMENT,
+    name VARCHAR(100) NULL,
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE rol(
+    id INT NOT NULL AUTO_INCREMENT,
+    title VARCHAR(100) NULL,
+    department_id INT NULL,
+    PRIMARY KEY (id)
 );
