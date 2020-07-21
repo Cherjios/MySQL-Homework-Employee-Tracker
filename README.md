@@ -18,6 +18,7 @@ cd MySQL-Homework-Employee-Tracker.git
 
 ## Technology
 * [Javascript](https://developer.mozilla.org/en-US/docs/Web/)
+* [Node.js](https://nodejs.org/en/)
 * [MySQL](https://www.mysql.com/)
 
 ## Usage
