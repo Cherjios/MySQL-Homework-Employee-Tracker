@@ -26,7 +26,9 @@ function start(){
           type:"list", 
           name:"UserChoices",
           message:"What do you want to do?",
-          choices:["Add Department","Add Roles","Add employee","View departments","View roles","View employees","exit",]
+          choices:["Add Department","Add Roles","Add employee",
+                  "View departments","View roles","View employees",
+                  "Update employee roles","exit",]
       }
   ]).then(userChoices => {
       switch(userChoices.UserChoices){
@@ -47,6 +49,9 @@ function start(){
               break;
           case "View employees":
             viewEmployees()
+              break;
+        case "Update employee roles":
+            
               break;
           case "exit":
               connection.end()
@@ -180,9 +185,15 @@ function viewRoles(){
 };
 
 function viewEmployees(){
-  connection.query("SELECT * FROM employee", function(err, results){
+  let query = "SELECT employee.id, employee.first_name, employee.last_name, rol.title ";
+  query+= "FROM employee INNER JOIN rol ON (rol.id =employee.role_id) ";
+  connection.query(query, function(err, results){
     if (err) throw err;
     console.table(results);
     start();
     })
 };
+
+function UpdateEmployeeRoles(){
+
+}
