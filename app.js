@@ -43,10 +43,10 @@ function start(){
             viewDepartments()
               break;
           case "View roles":
-            
+            viewRoles()
               break;
           case "View employees":
-            
+            viewEmployees()
               break;
           case "exit":
               connection.end()
@@ -165,6 +165,22 @@ function addEmployee(){
 
 function viewDepartments(){
   connection.query("SELECT * FROM department", function(err, results){
+    if (err) throw err;
+    console.table(results);
+    start();
+    })
+};
+
+function viewRoles(){
+  connection.query("SELECT * FROM rol", function(err, results){
+    if (err) throw err;
+    console.table(results);
+    start();
+    })
+};
+
+function viewEmployees(){
+  connection.query("SELECT * FROM employee", function(err, results){
     if (err) throw err;
     console.table(results);
     start();
