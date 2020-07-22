@@ -26,7 +26,7 @@ function start(){
           type:"list", 
           name:"UserChoices",
           message:"What do you want to do?",
-          choices:["Add Department","Add Roles","Add employee","exit",]
+          choices:["Add Department","Add Roles","Add employee","View departments","View roles","View employees","exit",]
       }
   ]).then(userChoices => {
       switch(userChoices.UserChoices){
@@ -38,6 +38,15 @@ function start(){
               break;
           case "Add employee":
             addEmployee()
+              break;
+          case "View departments":
+            viewDepartments()
+              break;
+          case "View roles":
+            
+              break;
+          case "View employees":
+            
               break;
           case "exit":
               connection.end()
@@ -153,4 +162,11 @@ function addEmployee(){
       );
     });
 }
- 
+
+function viewDepartments(){
+  connection.query("SELECT * FROM department", function(err, results){
+    if (err) throw err;
+    console.table(results);
+    start();
+    })
+};
