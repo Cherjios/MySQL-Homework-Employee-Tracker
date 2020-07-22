@@ -32,10 +32,9 @@ function start(){
       switch(userChoices.UserChoices){
           case "Add Department":
             addDepartment()
-                    
               break;
           case "Add Roles":
-              
+            addRoles()
               break;
           case "Add employee":
               
@@ -75,6 +74,41 @@ function addDepartment(){
     });
 }
   
-
+function addRoles(){
+  inquirer
+  .prompt([
+    {
+        type:"input", 
+        name:"titleName",
+        message:"What title do you want to add?"
+    },
+    {
+      type:"input", 
+      name:"salary",
+      message:"How much Salary do you want to add?"
+    },
+    {
+      type:"input", 
+      name:"departmentId",
+      message:"Which department id?"
+    }
+    ])
+    .then(function (answer){
+      connection.query(
+        "INSERT INTO rol SET ?",
+        {
+          title: answer.titleName,
+          salary:answer.salary,
+          department_id: answer.departmentId
+        },
+        function(err) {
+          if (err) throw err;
+          console.log("You inserted a new Rol successfully!");
+          // re-prompt the user for if they want to bid or post
+          start();
+        }        
+      );
+    });
+}
 
  
