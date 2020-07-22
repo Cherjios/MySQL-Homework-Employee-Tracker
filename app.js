@@ -51,7 +51,7 @@ function start(){
             viewEmployees()
               break;
         case "Update employee roles":
-            
+            UpdateEmployeeRoles()
               break;
           case "exit":
               connection.end()
@@ -195,5 +195,39 @@ function viewEmployees(){
 };
 
 function UpdateEmployeeRoles(){
+  connection.query("SELECT * FROM employee", function(err, results) {
+    if (err) throw err;
+    inquirer
+      .prompt([
+      {
+        name: "choice",
+        type: "rawlist",
+        choices: function() {
+          var choicesArray = [];
+          for(var i=0; i< results.length; i++) {
+            choicesArray.push(results[i].name);
+          }
+          return choicesArray;
+        },
+        messages:"Which employee do you want to Update rol?"
+      },
+      {
+        name:"UpdateRol",
+        type:"input",
+        message:"What is the employee new rol"
+      }
+    ]).then(function (answer){
+      var queryUpdate = "UPDATE rol "
+        queryUpdate += "SET title = answer.UpdateRol "
+        queryUpdate += `WHERE employee.name = ${answer.choice};`
+      connection.query(queryUpdate,function(err) {
+          if (err) throw err;
+          console.log("You inserted a new Rol successfully!");
+          // re-prompt the user for if they want to bid or post
+          start();
+        }        
+      );
+    });
+  })
 
 }
