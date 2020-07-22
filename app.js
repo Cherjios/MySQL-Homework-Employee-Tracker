@@ -37,7 +37,7 @@ function start(){
             addRoles()
               break;
           case "Add employee":
-              
+            addEmployee()
               break;
           case "exit":
               connection.end()
@@ -111,4 +111,46 @@ function addRoles(){
     });
 }
 
+function addEmployee(){
+  inquirer
+  .prompt([
+    {
+        type:"input", 
+        name:"firstName",
+        message:"Employee name?"
+    },
+    {
+      type:"input", 
+      name:"lastName",
+      message:"Employee last name?"
+    },
+    {
+      type:"input", 
+      name:"roleId",
+      message:"Any role id?"
+    },
+    {
+      type:"input", 
+      name:"managerId",
+      message:"Any manager id?"
+    }
+    ])
+    .then(function (answer){
+      connection.query(
+        "INSERT INTO employee SET ?",
+        {
+          first_name: answer.firstName,
+          last_name:answer.lastName,
+          role_id: answer.roleId,
+          manager_id: answer.managerId
+        },
+        function(err) {
+          if (err) throw err;
+          console.log("You inserted a new employee successfully!");
+          // re-prompt the user for if they want to bid or post
+          start();
+        }        
+      );
+    });
+}
  
