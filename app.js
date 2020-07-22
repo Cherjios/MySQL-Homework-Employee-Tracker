@@ -29,9 +29,10 @@ function start(){
           choices:["Add Department","Add Roles","Add employee","exit",]
       }
   ]).then(userChoices => {
-      switch(userChoices.TeamChoices){
+      switch(userChoices.UserChoices){
           case "Add Department":
-              
+            addDepartment()
+                    
               break;
           case "Add Roles":
               
@@ -40,11 +41,40 @@ function start(){
               
               break;
           case "exit":
-              
+              connection.end()
               break;
           default:
-              createTeam()    
+                  
       }
   })
 
 }
+
+function addDepartment(){
+  inquirer
+  .prompt([
+    {
+        type:"input", 
+        name:"DepartmentName",
+        message:"What department do you want to add?"
+    }
+    ])
+    .then(function (answer){
+      connection.query(
+        "INSERT INTO department SET ?",
+        {
+          name: answer.DepartmentName
+        },
+        function(err) {
+          if (err) throw err;
+          console.log("You inserted a new department successfully!");
+          // re-prompt the user for if they want to bid or post
+          start();
+        }        
+      );
+    });
+}
+  
+
+
+ 
