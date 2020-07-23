@@ -239,10 +239,10 @@ function viewEmployeesByManager(){
         messages:"Which Manager do you want to see?"
       }
     ]).then(function (answer){ 
-      connection.query("SELECT first_name, last_name FROM employee WHERE ?",
+      connection.query("SELECT first_name, last_name, manager_id FROM employee WHERE ?",
       [
         {
-          manager_id:answer.choice
+          manager_id: answer.choice
         }
       ],
       function(err, result) {
