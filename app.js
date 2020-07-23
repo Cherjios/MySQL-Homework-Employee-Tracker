@@ -205,7 +205,7 @@ function UpdateEmployeeRoles(){
         choices: function() {
           var choicesArray = [];
           for(var i=0; i< results.length; i++) {
-            choicesArray.push(results[i].name);
+            choicesArray.push(results[i].first_name);
           }
           return choicesArray;
         },
@@ -214,15 +214,21 @@ function UpdateEmployeeRoles(){
       {
         name:"UpdateRol",
         type:"input",
-        message:"What is the employee new rol"
+        message:"What is the employee new rol id?"
       }
     ]).then(function (answer){
-      var queryUpdate = "UPDATE rol "
-        queryUpdate += "SET title = answer.UpdateRol "
-        queryUpdate += `WHERE employee.name = ${answer.choice};`
-      connection.query(queryUpdate,function(err) {
+      connection.query("UPDATE employee SET ? WHERE ?",
+      [
+        {
+          role_id:answer.UpdateRol
+        },
+        {
+          first_name:answer.choice
+        }
+      ],
+      function(err) {
           if (err) throw err;
-          console.log("You inserted a new Rol successfully!");
+          console.log("You have updated Rol successfully!");
           // re-prompt the user for if they want to bid or post
           start();
         }        
