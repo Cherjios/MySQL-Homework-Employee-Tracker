@@ -27,7 +27,7 @@ function start(){
           name:"UserChoices",
           message:"What do you want to do?",
           choices:["Add Department","Add Roles","Add employee",
-                  "View departments","View roles","View employees","View employees with rol title",
+                  "View departments","View roles","View employees","View employees with rol title","View employees by manager",
                   "Update employee roles","Update employee manager","Delete Departments",
                   "Delete roles","Delete Employees","exit",]
       }
@@ -53,6 +53,9 @@ function start(){
               break;
           case "View employees with rol title":
             viewEmployeesWithRolTitle()
+            break;
+          case "View employees by manager":
+            viewEmployeesByManager()
             break;
           case "Update employee roles":
             UpdateEmployeeRoles()
@@ -218,6 +221,40 @@ function viewEmployeesWithRolTitle(){
     })
 };
 
+function viewEmployeesByManager(){
+  connection.query("SELECT manager_id  FROM employee", function(err, results) {
+    if (err) throw err;
+    inquirer
+      .prompt([
+      {
+        name: "choice",
+        type: "rawlist",
+        choices: function() {
+          var choicesArray = [];
+          for(var i=0; i< results.length; i++) {
+            choicesArray.push(results[i].manager_id);
+          }
+          return choicesArray;
+        },
+        messages:"Which Manager do you want to see?"
+      }
+    ]).then(function (answer){ 
+      connection.query("SELECT first_name, last_name FROM employee WHERE ?",
+      [
+        {
+          manager_id:answer.choice
+        }
+      ],
+      function(err, result) {
+          if (err) throw err;
+          console.table(result);
+          start();
+        }    
+      );    
+    });
+  })
+}
+
 function UpdateEmployeeRoles(){
   connection.query("SELECT * FROM employee", function(err, results) {
     if (err) throw err;
@@ -259,7 +296,6 @@ function UpdateEmployeeRoles(){
       );
     });
   })
-
 }
 
 function UpdateEmployeeManager(){
