@@ -28,7 +28,7 @@ function start(){
           message:"What do you want to do?",
           choices:["Add Department","Add Roles","Add employee",
                   "View departments","View roles","View employees",
-                  "Update employee roles","exit",]
+                  "Update employee roles","Update employee manager","exit",]
       }
   ]).then(userChoices => {
       switch(userChoices.UserChoices){
@@ -50,9 +50,12 @@ function start(){
           case "View employees":
             viewEmployees()
               break;
-        case "Update employee roles":
+          case "Update employee roles":
             UpdateEmployeeRoles()
               break;
+          case "Update employee manager":
+            UpdateEmployeeManager()
+            break;
           case "exit":
               connection.end()
               break;
@@ -185,7 +188,7 @@ function viewRoles(){
 };
 
 function viewEmployees(){
-  let query = "SELECT employee.id, employee.first_name, employee.last_name, rol.title ";
+  let query = "SELECT employee.id, employee.first_name, employee.last_name, rol.title, employee.manager_id ";
   query+= "FROM employee INNER JOIN rol ON (rol.id =employee.role_id) ";
   connection.query(query, function(err, results){
     if (err) throw err;
@@ -229,6 +232,50 @@ function UpdateEmployeeRoles(){
       function(err) {
           if (err) throw err;
           console.log("You have updated Rol successfully!");
+          // re-prompt the user for if they want to bid or post
+          start();
+        }        
+      );
+    });
+  })
+
+}
+
+function UpdateEmployeeManager(){
+  connection.query("SELECT * FROM employee", function(err, results) {
+    if (err) throw err;
+    inquirer
+      .prompt([
+      {
+        name: "choice",
+        type: "rawlist",
+        choices: function() {
+          var choicesArray = [];
+          for(var i=0; i< results.length; i++) {
+            choicesArray.push(results[i].first_name);
+          }
+          return choicesArray;
+        },
+        messages:"Which employee do you want to Update Manager?"
+      },
+      {
+        name:"UpdateRol",
+        type:"input",
+        message:"What is the employee new Manager id?"
+      }
+    ]).then(function (answer){
+      connection.query("UPDATE employee SET ? WHERE ?",
+      [
+        {
+          manager_id:answer.UpdateRol
+        },
+        {
+          first_name:answer.choice
+        }
+      ],
+      function(err) {
+          if (err) throw err;
+          console.log("You have updated Manager id successfully!");
           // re-prompt the user for if they want to bid or post
           start();
         }        
