@@ -28,7 +28,7 @@ function start(){
           message:"What do you want to do?",
           choices:["Add Department","Add Roles","Add employee",
                   "View departments","View roles","View employees",
-                  "Update employee roles","Update employee manager","exit",]
+                  "Update employee roles","Update employee manager","Delete Departments","exit",]
       }
   ]).then(userChoices => {
       switch(userChoices.UserChoices){
@@ -55,6 +55,9 @@ function start(){
               break;
           case "Update employee manager":
             UpdateEmployeeManager()
+            break;
+          case "Delete Departments":
+            deleteDepartments()
             break;
           case "exit":
               connection.end()
@@ -276,6 +279,42 @@ function UpdateEmployeeManager(){
       function(err) {
           if (err) throw err;
           console.log("You have updated Manager id successfully!");
+          // re-prompt the user for if they want to bid or post
+          start();
+        }        
+      );
+    });
+  })
+
+}
+
+function deleteDepartments(){
+  connection.query("SELECT * FROM department", function(err, results) {
+    if (err) throw err;
+    inquirer
+      .prompt([
+      {
+        name: "choice",
+        type: "rawlist",
+        choices: function() {
+          var choicesArray = [];
+          for(var i=0; i< results.length; i++) {
+            choicesArray.push(results[i].name);
+          }
+          return choicesArray;
+        },
+        messages:"Which department do you want to Delete?"
+      }
+    ]).then(function (answer){
+      connection.query("DELETE FROM department WHERE ?",
+      [
+        {
+          name:answer.choice
+        }
+      ],
+      function(err) {
+          if (err) throw err;
+          console.log("You have successfully Deleted a department!");
           // re-prompt the user for if they want to bid or post
           start();
         }        
