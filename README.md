@@ -31,7 +31,7 @@ nmp install mysql
 * [npm](https://www.npmjs.com/)
 
 ## Usage
-![Usage](.gif)
+![MySQLHomework](MySQLHomework.gif)
 
 ## Contributing
 [cherjios](https://github.com/cherjios)
