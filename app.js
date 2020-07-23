@@ -27,7 +27,7 @@ function start(){
           name:"UserChoices",
           message:"What do you want to do?",
           choices:["Add Department","Add Roles","Add employee",
-                  "View departments","View roles","View employees",
+                  "View departments","View roles","View employees","View employees with rol title",
                   "Update employee roles","Update employee manager","Delete Departments",
                   "Delete roles","Delete Employees","exit",]
       }
@@ -51,6 +51,9 @@ function start(){
           case "View employees":
             viewEmployees()
               break;
+          case "View employees with rol title":
+            viewEmployeesWithRolTitle()
+            break;
           case "Update employee roles":
             UpdateEmployeeRoles()
               break;
@@ -198,6 +201,14 @@ function viewRoles(){
 };
 
 function viewEmployees(){
+  connection.query("SELECT * FROM employee", function(err, results){
+    if (err) throw err;
+    console.table(results);
+    start();
+    })
+};
+
+function viewEmployeesWithRolTitle(){
   let query = "SELECT employee.id, employee.first_name, employee.last_name, rol.title, employee.manager_id ";
   query+= "FROM employee INNER JOIN rol ON (rol.id =employee.role_id) ";
   connection.query(query, function(err, results){
