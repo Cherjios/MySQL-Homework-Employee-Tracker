@@ -1,0 +1,20 @@
+{
+  "name": "MySQL-Homework-Employee-Tracker",
+  "version": "1.0.0",
+  "description": "[![Ask Me Anything !](https://img.shields.io/badge/Ask%20me-anything-1abc9c.svg)](https://GitHub.com/Naereen/ama)",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Cherjios/MySQL-Homework-Employee-Tracker.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Cherjios/MySQL-Homework-Employee-Tracker/issues"
+  },
+  "homepage": "https://github.com/Cherjios/MySQL-Homework-Employee-Tracker#readme"
+}
