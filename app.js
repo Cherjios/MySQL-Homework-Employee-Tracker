@@ -28,7 +28,8 @@ function start(){
           message:"What do you want to do?",
           choices:["Add Department","Add Roles","Add employee",
                   "View departments","View roles","View employees",
-                  "Update employee roles","Update employee manager","Delete Departments","exit",]
+                  "Update employee roles","Update employee manager","Delete Departments",
+                  "Delete roles","exit",]
       }
   ]).then(userChoices => {
       switch(userChoices.UserChoices){
@@ -58,6 +59,9 @@ function start(){
             break;
           case "Delete Departments":
             deleteDepartments()
+            break;
+          case "Delete Roles":
+            deleteRoles()
             break;
           case "exit":
               connection.end()
@@ -315,6 +319,42 @@ function deleteDepartments(){
       function(err) {
           if (err) throw err;
           console.log("You have successfully Deleted a department!");
+          // re-prompt the user for if they want to bid or post
+          start();
+        }        
+      );
+    });
+  })
+
+}
+
+function deleteRoles(){
+  connection.query("SELECT * FROM rol", function(err, results) {
+    if (err) throw err;
+    inquirer
+      .prompt([
+      {
+        name: "choice",
+        type: "rawlist",
+        choices: function() {
+          var choicesArray = [];
+          for(var i=0; i< results.length; i++) {
+            choicesArray.push(results[i].title);
+          }
+          return choicesArray;
+        },
+        messages:"Which role do you want to Delete?"
+      }
+    ]).then(function (answer){
+      connection.query("DELETE FROM rol WHERE ?",
+      [
+        {
+          title:answer.choice
+        }
+      ],
+      function(err) {
+          if (err) throw err;
+          console.log("You have successfully Deleted a role!");
           // re-prompt the user for if they want to bid or post
           start();
         }        
